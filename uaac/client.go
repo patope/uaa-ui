@@ -10,6 +10,39 @@ import (
 	"strings"
 )
 
+func GetServerInfo(at AccessToken) (ServerInfo, error) {
+	var info ServerInfo
+
+	client := &http.Client{}
+
+	req, err := http.NewRequest("GET", os.Getenv("UAA_URL")+"/info", nil)
+	req.Header.Set("Authorization", "Bearer "+at.Token)
+	req.Header.Set("Accept", "application/json")
+	if err != nil {
+		return info, err
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return info, err
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return info, err
+	}
+
+	fmt.Println(string(body))
+
+	err = json.Unmarshal(body, &info)
+	if err != nil {
+		return info, fmt.Errorf("Unable to unmarshall json response to type ServerInfo; error: %v response: %s", err.Error(), string(body))
+	}
+
+	return info, nil
+}
+
 func GetClientToken() (AccessToken, error) {
 	var at AccessToken
 
@@ -48,8 +81,40 @@ func GetClientToken() (AccessToken, error) {
 	return at, nil
 }
 
+func ListOauthClients(at AccessToken) (OauthClients, error) {
+	var clients OauthClients
+
+	client := &http.Client{}
+
+	req, err := http.NewRequest("GET", os.Getenv("UAA_URL")+"/oauth/clients", nil)
+	req.Header.Set("Authorization", "Bearer "+at.Token)
+	if err != nil {
+		return clients, err
+	}
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return clients, err
+	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return clients, err
+	}
+
+	fmt.Println(string(body))
+
+	err = json.Unmarshal(body, &clients)
+	if err != nil {
+		return clients, fmt.Errorf("Unable to unmarshall json response to type OauthClients; error: %v response: %s", err.Error(), string(body))
+	}
+
+	return clients, nil
+}
+
 func ListZones(at AccessToken) ([]Zone, error) {
-	z := make([]Zone, 0)
+	var z []Zone
 
 	client := &http.Client{}
 	//TODO - get the base for the url from an environment variable
@@ -75,7 +140,7 @@ func ListZones(at AccessToken) ([]Zone, error) {
 
 	err = json.Unmarshal(body, &z)
 	if err != nil {
-		return z, err
+		return z, fmt.Errorf("Unable to unmarshall json response to a slice of Zones; error: %v response: %s", err.Error(), string(body))
 	}
 
 	return z, nil

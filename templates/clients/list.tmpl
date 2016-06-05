@@ -3,10 +3,37 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Clients</title>
+  <title>OAuth Clients</title>
 </head>
 
 <body>
-  <h2>Clients</h2>
+  <h1>OAuth Clients</h1>
+
+  <div>{{ .Schemas}}
+
+  <table>
+    <tr>
+      <td>Client ID</td>
+      <td>Name</td>
+      <td>Action</td>
+      <td>Scope</td>
+      <td>Resource IDs</td>
+      <td>Authorities</td>
+      <td>Authorized Grant Types</td>
+      <td>Last Modified</td>
+    </tr>
+    {{range .Clients}}
+      <tr>
+        <td>{{ .ID }}</td>
+        <td>{{ .Name }}</td>
+        <td>{{ .Action }}</td>
+        <td>{{ .Scope }}</td>
+        <td>{{ .ResourceIDs }}</td>
+        <td>{{ .Authorities }}</td>
+        <td>{{ .AuthorizedGrantTypes }}</td>
+        <td>{{ .LastModified }}</td>
+    </tr>
+    {{else}}<tr><td colspan="7">No Clients Were Found</td></tr>{{end}}
+  </table>
 </body>
 </html>

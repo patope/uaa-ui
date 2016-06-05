@@ -1,0 +1,31 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>UAA Server Info</title>
+</head>
+
+<body>
+  <h1>UAA Server Info</h1>
+  {{ if . }}
+  <ul>
+      <li>Version: {{ .Version }}</li>
+      <li>Links: {{ .Links }}</li>
+      <li>Zone Name: {{ .ZoneName }}</li>
+      <li>Entity ID: {{ .EntityID }}</li>
+      <li>Commit ID: <a href="https://github.com/cloudfoundry/uaa/commit/{{ .CommitID }}">{{ .CommitID }}</a></li>
+      <li>IDP Definitions: {{ .IDPDefinitions }}</li>
+      <li>Timestamp: {{ .Timestamp }}</li>
+  </ul>
+  {{else}}Unable To retrieve Server Info{{end}}
+
+  <h2>Available Actions</h2>
+  <ul>
+    <li><a href="/clients">List OAuth Clients</a></li>
+    <li><a href="/zones">List Identity Zones</a></li>
+  </ul>
+
+
+</body>
+</html>

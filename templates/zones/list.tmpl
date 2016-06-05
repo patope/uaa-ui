@@ -10,9 +10,19 @@
   <h1>Identity Zones</h1>
   <table>
     <tr>
-      <td>ID</td><td>Name</td><td>Subdomain</td><td>Description</td>
+      <td>ID</td>
+      <td>Name</td>
+      <td>Subdomain</td>
+      <td>Description</td>
     </tr>
-  {{range .}}<tr><td>{{ .ID }}</td><td>{{ .Name }}</td><td>{{ .Subdomain }}</td><td>{{ .Description }}</td></tr>{{else}}<tr><td></td></tr>{{end}}
+    {{range .}}
+    <tr>
+      <td>{{ .ID }}</td>
+      <td>{{ .Name }}</td>
+      <td>{{ .Subdomain }}</td>
+      <td>{{ .Description }}</td>
+    </tr>
+    {{else}}<tr><td colspan="4">No Zones Found</td></tr>{{end}}
   </table>
 </body>
 </html>

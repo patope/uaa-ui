@@ -22,8 +22,9 @@ func main() {
 	n := negroni.Classic()
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", defaultHandler).Methods("GET")
+	router.HandleFunc("/", serverInfoHandler(r)).Methods("GET")
 	router.HandleFunc("/zones", listZonesHandler(r)).Methods("GET")
+	router.HandleFunc("/clients", listOauthClientsHandler(r)).Methods("GET")
 
 	n.UseHandler(router)
 
@@ -33,8 +34,34 @@ func main() {
 	fmt.Printf("Server running at %v\n", addy)
 }
 
-func defaultHandler(w http.ResponseWriter, req *http.Request) {
-	fmt.Fprintf(w, "Welcome to the home page!")
+func serverInfoHandler(r *render.Render) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		token, err := uaac.GetClientToken()
+		if err != nil {
+			r.Text(w, http.StatusInternalServerError, err.Error())
+		}
+		info, err := uaac.GetServerInfo(token)
+		if err != nil {
+			r.Text(w, http.StatusInternalServerError, err.Error())
+		}
+
+		r.HTML(w, http.StatusOK, "info", info)
+	}
+}
+
+func listOauthClientsHandler(r *render.Render) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		token, err := uaac.GetClientToken()
+		if err != nil {
+			r.Text(w, http.StatusInternalServerError, err.Error())
+		}
+		clients, err := uaac.ListOauthClients(token)
+		if err != nil {
+			r.Text(w, http.StatusInternalServerError, err.Error())
+		}
+
+		r.HTML(w, http.StatusOK, "clients/list", clients)
+	}
 }
 
 func listZonesHandler(r *render.Render) http.HandlerFunc {
