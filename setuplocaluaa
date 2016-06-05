@@ -1,0 +1,9 @@
+uaac target http://localhost:8080/uaa
+# Use the admin client to create your uaa-ui
+uaac token client get admin -s adminsecret
+# Create the uaa-ui client with the necessary authorities
+uaac client add uaa-ui --authorities "zones.read clients.read clients.secret clients.write uaa.admin clients.admin scim.write scim.read" -s uaa-ui-secret --authorized_grant_types client_credentials
+# Obtain a token for the newly created client so that it can be tested
+uaac token client get uaa-ui -s uaa-ui-secret
+# Test the ability to curl the protected identity-zones endpoint on the UAA server
+uaac curl /identity-zones
