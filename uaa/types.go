@@ -1,4 +1,4 @@
-package uaac
+package uaa
 
 type ServerInfo struct {
 	App            map[string]string

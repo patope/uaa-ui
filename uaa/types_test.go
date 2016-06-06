@@ -1,4 +1,4 @@
-package uaac
+package uaa
 
 import (
 	"encoding/json"

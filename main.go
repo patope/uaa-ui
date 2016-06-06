@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/dave-malone/uaa-fe/uaac"
+	"github.com/dave-malone/uaa-ui/uaa"
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
 	"github.com/urfave/negroni"
@@ -18,13 +18,13 @@ func main() {
 	}
 
 	r := render.New()
-
+	uaac := getUaac()
 	n := negroni.Classic()
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", serverInfoHandler(r)).Methods("GET")
-	router.HandleFunc("/zones", listZonesHandler(r)).Methods("GET")
-	router.HandleFunc("/clients", listOauthClientsHandler(r)).Methods("GET")
+	router.HandleFunc("/", serverInfoHandler(r, uaac)).Methods("GET")
+	router.HandleFunc("/zones", listZonesHandler(r, uaac)).Methods("GET")
+	router.HandleFunc("/clients", listOauthClientsHandler(r, uaac)).Methods("GET")
 
 	n.UseHandler(router)
 
@@ -34,13 +34,21 @@ func main() {
 	fmt.Printf("Server running at %v\n", addy)
 }
 
-func serverInfoHandler(r *render.Render) http.HandlerFunc {
+func getUaac() *uaa.Client {
+	serverURL := os.Getenv("UAA_URL")
+	clientID := os.Getenv("UAA_CLIENT_ID")
+	clientSecret := os.Getenv("UAA_CLIENT_SECRET")
+	uaac, err := uaa.NewClient(serverURL, clientID, clientSecret)
+	if err != nil {
+		panic("Failed to initialize uaa client; check your UAA_URL and your UAA_CLIENT_ID")
+	}
+
+	return uaac
+}
+
+func serverInfoHandler(r *render.Render, uaac *uaa.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		token, err := uaac.GetClientToken()
-		if err != nil {
-			r.Text(w, http.StatusInternalServerError, err.Error())
-		}
-		info, err := uaac.GetServerInfo(token)
+		info, err := uaac.GetServerInfo()
 		if err != nil {
 			r.Text(w, http.StatusInternalServerError, err.Error())
 		}
@@ -49,13 +57,9 @@ func serverInfoHandler(r *render.Render) http.HandlerFunc {
 	}
 }
 
-func listOauthClientsHandler(r *render.Render) http.HandlerFunc {
+func listOauthClientsHandler(r *render.Render, uaac *uaa.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		token, err := uaac.GetClientToken()
-		if err != nil {
-			r.Text(w, http.StatusInternalServerError, err.Error())
-		}
-		clients, err := uaac.ListOauthClients(token)
+		clients, err := uaac.ListOauthClients()
 		if err != nil {
 			r.Text(w, http.StatusInternalServerError, err.Error())
 		}
@@ -64,13 +68,9 @@ func listOauthClientsHandler(r *render.Render) http.HandlerFunc {
 	}
 }
 
-func listZonesHandler(r *render.Render) http.HandlerFunc {
+func listZonesHandler(r *render.Render, uaac *uaa.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		token, err := uaac.GetClientToken()
-		if err != nil {
-			r.Text(w, http.StatusInternalServerError, err.Error())
-		}
-		zones, err := uaac.ListZones(token)
+		zones, err := uaac.ListZones()
 		if err != nil {
 			r.Text(w, http.StatusInternalServerError, err.Error())
 		}
