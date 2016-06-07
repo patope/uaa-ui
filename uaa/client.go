@@ -11,15 +11,23 @@ import (
 	"strings"
 )
 
-type Client struct {
+type Client interface {
+	getAccessToken() (AccessToken, error)
+	newHTTPRequest(method, uriStr string, body io.Reader) (*http.Request, error)
+	GetServerInfo() (ServerInfo, error)
+	ListOauthClients() (OauthClients, error)
+	ListZones() ([]Zone, error)
+}
+
+type uaaClient struct {
 	serverURL    string
 	clientSecret string
 	clientID     string
 	accessToken  *AccessToken
 }
 
-func NewClient(serverURL, clientID, clientSecret string) (*Client, error) {
-	c := &Client{
+func NewClient(serverURL, clientID, clientSecret string) (Client, error) {
+	c := &uaaClient{
 		serverURL:    serverURL,
 		clientID:     clientID,
 		clientSecret: clientSecret,
@@ -35,11 +43,11 @@ func NewClient(serverURL, clientID, clientSecret string) (*Client, error) {
 	return c, nil
 }
 
-func (c *Client) newHTTPRequest(method, uriStr string, body io.Reader) (*http.Request, error) {
+func (c *uaaClient) newHTTPRequest(method, uriStr string, body io.Reader) (*http.Request, error) {
 	return http.NewRequest(method, c.serverURL+uriStr, body)
 }
 
-func (c *Client) executeAndUnmarshall(req *http.Request, target interface{}) error {
+func (c *uaaClient) executeAndUnmarshall(req *http.Request, target interface{}) error {
 	if c.accessToken != nil {
 		req.Header.Set("Authorization", "Bearer "+c.accessToken.Token)
 	}
@@ -64,7 +72,7 @@ func (c *Client) executeAndUnmarshall(req *http.Request, target interface{}) err
 	return nil
 }
 
-func (c *Client) getAccessToken() (AccessToken, error) {
+func (c *uaaClient) getAccessToken() (AccessToken, error) {
 	var at AccessToken
 
 	params := url.Values{}
@@ -87,7 +95,7 @@ func (c *Client) getAccessToken() (AccessToken, error) {
 	return at, nil
 }
 
-func (c *Client) GetServerInfo() (ServerInfo, error) {
+func (c *uaaClient) GetServerInfo() (ServerInfo, error) {
 	var info ServerInfo
 
 	req, err := c.newHTTPRequest("GET", "/info", nil)
@@ -104,7 +112,7 @@ func (c *Client) GetServerInfo() (ServerInfo, error) {
 	return info, nil
 }
 
-func (c *Client) ListOauthClients() (OauthClients, error) {
+func (c *uaaClient) ListOauthClients() (OauthClients, error) {
 	var clients OauthClients
 
 	req, err := c.newHTTPRequest("GET", "/oauth/clients", nil)
@@ -120,7 +128,7 @@ func (c *Client) ListOauthClients() (OauthClients, error) {
 	return clients, nil
 }
 
-func (c *Client) ListZones() ([]Zone, error) {
+func (c *uaaClient) ListZones() ([]Zone, error) {
 	var zones []Zone
 
 	req, err := c.newHTTPRequest("GET", "/identity-zones", nil)

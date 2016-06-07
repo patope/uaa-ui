@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"net/http"
 	"os"
 
 	"github.com/dave-malone/uaa-ui/uaa"
@@ -34,7 +33,7 @@ func main() {
 	fmt.Printf("Server running at %v\n", addy)
 }
 
-func getUaac() *uaa.Client {
+func getUaac() uaa.Client {
 	serverURL := os.Getenv("UAA_URL")
 	clientID := os.Getenv("UAA_CLIENT_ID")
 	clientSecret := os.Getenv("UAA_CLIENT_SECRET")
@@ -44,37 +43,4 @@ func getUaac() *uaa.Client {
 	}
 
 	return uaac
-}
-
-func serverInfoHandler(r *render.Render, uaac *uaa.Client) http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
-		info, err := uaac.GetServerInfo()
-		if err != nil {
-			r.Text(w, http.StatusInternalServerError, err.Error())
-		}
-
-		r.HTML(w, http.StatusOK, "info", info)
-	}
-}
-
-func listOauthClientsHandler(r *render.Render, uaac *uaa.Client) http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
-		clients, err := uaac.ListOauthClients()
-		if err != nil {
-			r.Text(w, http.StatusInternalServerError, err.Error())
-		}
-
-		r.HTML(w, http.StatusOK, "clients/list", clients)
-	}
-}
-
-func listZonesHandler(r *render.Render, uaac *uaa.Client) http.HandlerFunc {
-	return func(w http.ResponseWriter, req *http.Request) {
-		zones, err := uaac.ListZones()
-		if err != nil {
-			r.Text(w, http.StatusInternalServerError, err.Error())
-		}
-
-		r.HTML(w, http.StatusOK, "zones/list", zones)
-	}
 }
