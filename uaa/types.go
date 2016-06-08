@@ -46,7 +46,7 @@ type OauthClient struct {
 	ChangeEmailRedirectURL string   `json:"change_email_redirect_url"`
 }
 
-type Zone struct {
+type IdentityZone struct {
 	ID           string
 	Subdomain    string
 	Name         string

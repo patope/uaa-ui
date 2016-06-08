@@ -146,7 +146,7 @@ func TestJSONUnmarshallServerInfo(t *testing.T) {
 	}
 }
 
-func TestJSONUnmarshallZone(t *testing.T) {
+func TestJSONUnmarshallIdentityZone(t *testing.T) {
 	responseBody := []byte(`{
         "id": "dummy-id",
         "subdomain": "dummy-subdomain",
@@ -157,7 +157,7 @@ func TestJSONUnmarshallZone(t *testing.T) {
         "last_modified": 946710000000
     }`)
 
-	var zone Zone
+	var zone IdentityZone
 
 	err := json.Unmarshal(responseBody, &zone)
 	if err != nil {

@@ -29,9 +29,9 @@ func listOauthClientsHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc
 	}
 }
 
-func listZonesHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc {
+func listIdentityZonesHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		zones, err := uaac.ListZones()
+		zones, err := uaac.ListIdentityZones()
 		if err != nil {
 			r.Text(w, http.StatusInternalServerError, err.Error())
 		}

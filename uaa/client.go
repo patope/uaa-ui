@@ -16,7 +16,7 @@ type Client interface {
 	newHTTPRequest(method, uriStr string, body io.Reader) (*http.Request, error)
 	GetServerInfo() (ServerInfo, error)
 	ListOauthClients() (OauthClients, error)
-	ListZones() ([]Zone, error)
+	ListIdentityZones() ([]IdentityZone, error)
 }
 
 type uaaClient struct {
@@ -128,8 +128,8 @@ func (c *uaaClient) ListOauthClients() (OauthClients, error) {
 	return clients, nil
 }
 
-func (c *uaaClient) ListZones() ([]Zone, error) {
-	var zones []Zone
+func (c *uaaClient) ListIdentityZones() ([]IdentityZone, error) {
+	var zones []IdentityZone
 
 	req, err := c.newHTTPRequest("GET", "/identity-zones", nil)
 	if err != nil {

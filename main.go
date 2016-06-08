@@ -22,7 +22,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/", serverInfoHandler(r, uaac)).Methods("GET")
-	router.HandleFunc("/zones", listZonesHandler(r, uaac)).Methods("GET")
+	router.HandleFunc("/zones", listIdentityZonesHandler(r, uaac)).Methods("GET")
 	router.HandleFunc("/clients", listOauthClientsHandler(r, uaac)).Methods("GET")
 
 	n.UseHandler(router)
