@@ -9,6 +9,7 @@ type FakeUaac struct {
 	si           ServerInfo
 	oauthClients OauthClients
 	zones        []IdentityZone
+	users        Users
 	err          error
 }
 
@@ -42,4 +43,7 @@ func (c *FakeUaac) ListOauthClients() (OauthClients, error) {
 }
 func (c *FakeUaac) ListIdentityZones() ([]IdentityZone, error) {
 	return c.zones, c.err
+}
+func (c *FakeUaac) ListUsers() (Users, error) {
+	return c.users, c.err
 }

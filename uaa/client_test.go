@@ -2,6 +2,7 @@ package uaa
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -159,5 +160,33 @@ func TestGetListIdentityZones(t *testing.T) {
 
 	if len(zones) == 0 {
 		t.Error("[]Zone was empty")
+	}
+}
+
+func TestGetListUsers(t *testing.T) {
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		data, err := ioutil.ReadFile("../testdata/users.json")
+
+		if err != nil {
+			panic("Failed to read ../testdata/users.json: " + err.Error())
+		}
+
+		w.Write(data)
+	}))
+	defer ts.Close()
+
+	uaac := &uaaClient{
+		serverURL:    ts.URL,
+		clientID:     "clientID",
+		clientSecret: "clientSecret",
+	}
+
+	users, err := uaac.ListUsers()
+	if err != nil {
+		t.Errorf("Failed to get Users: %v", err)
+	}
+
+	if len(users.Users) == 0 {
+		t.Error("[]Users was empty")
 	}
 }

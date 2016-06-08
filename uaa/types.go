@@ -55,3 +55,51 @@ type IdentityZone struct {
 	Created      int
 	LastModified int `json:"last_modified"`
 }
+
+type Users struct {
+	Users        []User `json:"resources"`
+	StartIndex   int
+	ItemsPerPage int
+	TotalResults int
+	Schemas      []string
+}
+
+type User struct {
+	GUID                 string `json:"id"`
+	ExternalID           string
+	Username             string
+	Name                 Name
+	Groups               []Group
+	Emails               []UserEmail
+	Active               bool
+	Verified             bool
+	Origin               string
+	ZoneID               string
+	PasswordLastModified string
+	Schemas              []string
+}
+
+type Name struct {
+	GivenName  string
+	FamilyName string
+}
+
+type UserEmail struct {
+	Value   string
+	Primary bool
+}
+
+type Approval struct {
+	UserID        string
+	ClientID      string
+	Scope         string
+	Status        string
+	LastUpdatedAt string
+	ExpiresAt     string
+}
+
+type Group struct {
+	Value   string
+	Display string
+	Type    string
+}

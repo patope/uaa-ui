@@ -24,6 +24,7 @@ func main() {
 	router.HandleFunc("/", serverInfoHandler(r, uaac)).Methods("GET")
 	router.HandleFunc("/zones", listIdentityZonesHandler(r, uaac)).Methods("GET")
 	router.HandleFunc("/clients", listOauthClientsHandler(r, uaac)).Methods("GET")
+	router.HandleFunc("/users", listUsersHandler(r, uaac)).Methods("GET")
 
 	n.UseHandler(router)
 

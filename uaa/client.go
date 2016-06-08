@@ -17,6 +17,7 @@ type Client interface {
 	GetServerInfo() (ServerInfo, error)
 	ListOauthClients() (OauthClients, error)
 	ListIdentityZones() ([]IdentityZone, error)
+	ListUsers() (Users, error)
 }
 
 type uaaClient struct {
@@ -142,4 +143,22 @@ func (c *uaaClient) ListIdentityZones() ([]IdentityZone, error) {
 	}
 
 	return zones, nil
+}
+
+func (c *uaaClient) ListUsers() (Users, error) {
+	var users Users
+
+	req, err := c.newHTTPRequest("GET", "/Users", nil)
+	if err != nil {
+		return users, err
+	}
+
+	req.Header.Set("Accept", "application/json")
+
+	err = c.executeAndUnmarshall(req, &users)
+	if err != nil {
+		return users, err
+	}
+
+	return users, nil
 }

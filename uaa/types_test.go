@@ -2,6 +2,7 @@ package uaa
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"testing"
 )
 
@@ -185,4 +186,39 @@ func TestJSONUnmarshallIdentityZone(t *testing.T) {
 	if zone.LastModified == 0 {
 		t.Errorf("Zone.LastModified field empty after unmarshalling from json")
 	}
+}
+
+func TestJSONUnmarshallUsers(t *testing.T) {
+	responseBody, err := ioutil.ReadFile("../testdata/users.json")
+
+	if err != nil {
+		panic("Failed to read ../testdata/users.json: " + err.Error())
+	}
+
+	var users Users
+
+	err = json.Unmarshal(responseBody, &users)
+	if err != nil {
+		t.Errorf("Failed to unmarshall json to Users: %v", err)
+	}
+
+	if len(users.Users) == 0 {
+		t.Error("Failed to unmarshall resources json field onto Users.Users")
+	}
+
+	user := users.Users[0]
+
+	if len(user.GUID) == 0 {
+		t.Error("Failed to unmarshall resources[0].id field onto Users.Users[0].GUID")
+	}
+	if len(user.ExternalID) == 0 {
+		t.Error("Failed to unmarshall resources[0].externalID field onto Users.Users[0].ExternalID")
+	}
+	if len(user.Username) == 0 {
+		t.Error("Failed to unmarshall resources[0].username field onto Users.Users[0].Username")
+	}
+}
+
+func readTestdata(filename string) ([]byte, error) {
+	return ioutil.ReadFile(filename)
 }

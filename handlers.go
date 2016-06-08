@@ -39,3 +39,14 @@ func listIdentityZonesHandler(r *render.Render, uaac uaa.Client) http.HandlerFun
 		r.HTML(w, http.StatusOK, "zones/list", zones)
 	}
 }
+
+func listUsersHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		users, err := uaac.ListUsers()
+		if err != nil {
+			r.Text(w, http.StatusInternalServerError, err.Error())
+		}
+
+		r.HTML(w, http.StatusOK, "users/list", users)
+	}
+}
