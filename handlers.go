@@ -3,7 +3,8 @@ package main
 import (
 	"net/http"
 
-	"github.com/dave-malone/uaa-ui/uaa"
+	"./uaa"
+	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
 )
 
@@ -29,6 +30,17 @@ func listOauthClientsHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc
 	}
 }
 
+func listGroupsHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		groups, err := uaac.ListGroups()
+		if err != nil {
+			r.Text(w, http.StatusInternalServerError, err.Error())
+		}
+
+		r.HTML(w, http.StatusOK, "groups/list", groups)
+	}
+}
+
 func listIdentityZonesHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		zones, err := uaac.ListIdentityZones()
@@ -48,5 +60,28 @@ func listUsersHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc {
 		}
 
 		r.HTML(w, http.StatusOK, "users/list", users)
+	}
+}
+func userHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		vars := mux.Vars(req)
+		user, err := uaac.User(vars["id"])
+		if err != nil {
+			r.Text(w, http.StatusInternalServerError, err.Error())
+		}
+
+		r.HTML(w, http.StatusOK, "users/user", user)
+	}
+}
+
+func groupHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		vars := mux.Vars(req)
+		group, err := uaac.Group(vars["id"])
+		if err != nil {
+			r.Text(w, http.StatusInternalServerError, err.Error())
+		}
+
+		r.HTML(w, http.StatusOK, "groups/group", group)
 	}
 }

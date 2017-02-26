@@ -64,16 +64,37 @@ type Users struct {
 	Schemas      []string
 }
 
+type Groups struct {
+	Groups []struct {
+		GUID        string `json:"id"`
+		DisplayName string `json:"displayName"`
+		Members     []struct {
+			Value       string `json:"value"`
+			Type        string `json:"type"`
+			Origin      string `json:"origin"`
+			DisplayName string `json:"display"`
+		}
+	} `json:"resources"`
+	StartIndex   int
+	ItemsPerPage int
+	TotalResults int
+	Schemas      []string
+}
+
 type User struct {
-	GUID                 string `json:"id"`
-	ExternalID           string
-	Username             string
-	Name                 Name
-	Groups               []Group
+	GUID       string `json:"id"`
+	ExternalID string `json:"externalId"`
+	Username   string `json:"userName"`
+	Name       Name   `json:"name"`
+	Groups     []struct {
+		Value   string
+		Display string
+		Type    string
+	}
 	Emails               []UserEmail
-	Active               bool
-	Verified             bool
-	Origin               string
+	Active               bool   `json:"active"`
+	Verified             bool   `json:"verified"`
+	Origin               string `json:"origin"`
 	ZoneID               string
 	PasswordLastModified string
 	Schemas              []string
@@ -99,7 +120,12 @@ type Approval struct {
 }
 
 type Group struct {
-	Value   string
-	Display string
-	Type    string
+	GUID        string `json:"id"`
+	DisplayName string `json:"displayName"`
+	ZoneID      string `json:"zoneid"`
+	Members     []struct {
+		Origin string `json:"origin"`
+		Type   string `json:"type"`
+		Value  string `json:"value"`
+	} `json:"members"`
 }

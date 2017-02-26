@@ -10,6 +10,9 @@ type FakeUaac struct {
 	oauthClients OauthClients
 	zones        []IdentityZone
 	users        Users
+	user         User
+	groups       Groups
+	group        Group
 	err          error
 }
 
@@ -46,4 +49,13 @@ func (c *FakeUaac) ListIdentityZones() ([]IdentityZone, error) {
 }
 func (c *FakeUaac) ListUsers() (Users, error) {
 	return c.users, c.err
+}
+func (c *FakeUaac) ListGroups() (Groups, error) {
+	return c.groups, c.err
+}
+func (c *FakeUaac) User(id string) (User, error) {
+	return c.user, c.err
+}
+func (c *FakeUaac) Group(id string) (Group, error) {
+	return c.group, c.err
 }

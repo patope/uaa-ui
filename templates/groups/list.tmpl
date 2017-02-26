@@ -1,0 +1,32 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Groups</title>
+</head>
+
+<body>
+  <h1>Groups</h1>
+
+  <table>
+    <tr>
+      <td>Group ID</td>
+      <td>Name</td>
+      <td>Members</td>
+    </tr>
+    {{range .Groups}}
+      <tr>
+        <td><a href="/groups/{{ .GUID }}">{{ .GUID }}</a></td>
+        <td>{{ .DisplayName }}</td>
+        <td>
+        <ul>
+        {{range .Members }}
+          <li><a href="/users/{{ .Value }}">{{ .Value }}<a></li>{{end}}
+        </ul>
+        </td>
+    </tr>
+    {{else}}<tr><td colspan="7">No Groups Were Found</td></tr>{{end}}
+  </table>
+</body>
+</html>

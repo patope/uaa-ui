@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dave-malone/uaa-ui/uaa"
+	"./uaa"
 	"github.com/gorilla/mux"
 	"github.com/unrolled/render"
 	"github.com/urfave/negroni"
@@ -24,7 +24,10 @@ func main() {
 	router.HandleFunc("/", serverInfoHandler(r, uaac)).Methods("GET")
 	router.HandleFunc("/zones", listIdentityZonesHandler(r, uaac)).Methods("GET")
 	router.HandleFunc("/clients", listOauthClientsHandler(r, uaac)).Methods("GET")
+	router.HandleFunc("/users/{id}", userHandler(r, uaac)).Methods("GET")
 	router.HandleFunc("/users", listUsersHandler(r, uaac)).Methods("GET")
+	router.HandleFunc("/groups", listGroupsHandler(r, uaac)).Methods("GET")
+	router.HandleFunc("/groups/{id}", groupHandler(r, uaac)).Methods("GET")
 
 	n.UseHandler(router)
 

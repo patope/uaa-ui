@@ -18,6 +18,9 @@ type Client interface {
 	ListOauthClients() (OauthClients, error)
 	ListIdentityZones() ([]IdentityZone, error)
 	ListUsers() (Users, error)
+	User(id string) (User, error)
+	Group(id string) (Group, error)
+	ListGroups() (Groups, error)
 }
 
 type uaaClient struct {
@@ -161,4 +164,52 @@ func (c *uaaClient) ListUsers() (Users, error) {
 	}
 
 	return users, nil
+}
+
+func (c *uaaClient) User(id string) (user User, err error) {
+	req, err := c.newHTTPRequest("GET", "/Users/"+id, nil)
+	if err != nil {
+		return user, err
+	}
+
+	req.Header.Set("Accept", "application/json")
+
+	err = c.executeAndUnmarshall(req, &user)
+	if err != nil {
+		return user, err
+	}
+
+	return user, nil
+}
+
+func (c *uaaClient) ListGroups() (Groups, error) {
+	var groups Groups
+
+	req, err := c.newHTTPRequest("GET", "/Groups", nil)
+	if err != nil {
+		return groups, err
+	}
+
+	err = c.executeAndUnmarshall(req, &groups)
+	if err != nil {
+		return groups, err
+	}
+
+	return groups, nil
+}
+
+func (c *uaaClient) Group(id string) (group Group, err error) {
+	req, err := c.newHTTPRequest("GET", "/Groups/"+id, nil)
+	if err != nil {
+		return group, err
+	}
+
+	req.Header.Set("Accept", "application/json")
+
+	err = c.executeAndUnmarshall(req, &group)
+	if err != nil {
+		return group, err
+	}
+
+	return group, nil
 }

@@ -23,7 +23,7 @@
     </tr>
     {{range .Users}}
       <tr>
-        <td>{{ .GUID }}</td>
+        <td><a href="/users/{{ .GUID }}">{{ .GUID }}</a></td>
         <td>{{ .Active }}</td>
         <td>{{ .Verified }}</td>
         <td>{{ .ExternalID }}</td>

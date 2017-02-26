@@ -1,0 +1,27 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>User {{ .GUID }}</title>
+</head>
+
+<body>
+  <h1>User {{ .Username }}</h1>
+
+  <h2>Groups</h2>
+  <table>
+    <tr>
+      <td>Value</td>
+      <td>Display</td>
+      <td>Type</td>
+    </tr>
+    {{range .Groups}}
+      <tr>
+        <td>{{ .Value }}</td>
+        <td>{{ .Display }}</td>
+        <td>{{ .Type }}</td>
+    </tr>
+    {{else}}<tr><td colspan="7">No Groups Were Found</td></tr>{{end}}
+</body>
+</html>

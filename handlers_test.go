@@ -11,7 +11,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/dave-malone/uaa-ui/uaa"
+	"./uaa"
 	"github.com/unrolled/render"
 )
 
