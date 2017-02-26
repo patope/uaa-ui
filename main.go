@@ -16,7 +16,9 @@ func main() {
 		port = "3000"
 	}
 
-	r := render.New()
+	r := render.New(render.Options{
+		Layout: "layout",
+	})
 	uaac := getUaac()
 	n := negroni.Classic()
 	router := mux.NewRouter()

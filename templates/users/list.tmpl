@@ -1,26 +1,26 @@
-<!doctype html>
-
-<html lang="en">
-<head>
-  <meta charset="utf-8">
+{{ define "title-users/list" }}
   <title>Users</title>
-</head>
+{{ end }}
 
-<body>
+{{ define "header-users/list" }}
   <h1>Users</h1>
+{{ end }}
 
   <table>
+  <thead>
     <tr>
-      <td>ID</td>
-      <td>Active</td>
-      <td>Verified</td>
-      <td>External ID</td>
-      <td>Username</td>
-      <td>Name</td>
-      <td>Origin</td>
-      <td>Zone ID</td>
-      <td>Emails</td>
+      <th>ID</th>
+      <th>Active</th>
+      <th>Verified</th>
+      <th>External ID</th>
+      <th>Username</th>
+      <th>Name</th>
+      <th>Origin</th>
+      <th>Zone ID</th>
+      <th>Emails</th>
     </tr>
+    </thead>
+    <tbody>
     {{range .Users}}
       <tr>
         <td><a href="/users/{{ .GUID }}">{{ .GUID }}</a></td>
@@ -34,5 +34,5 @@
         <td>{{ .Emails }}</td>
     </tr>
     {{else}}<tr><td colspan="7">No Users Were Found</td></tr>{{end}}
-</body>
-</html>
+    </tbody>
+  </table>

@@ -1,25 +1,26 @@
-<!doctype html>
-
-<html lang="en">
-<head>
-  <meta charset="utf-8">
+{{ define "title-clients/list" }}
   <title>OAuth Clients</title>
-</head>
+{{ end }}
 
-<body>
+{{ define "header-clients/list" }}
   <h1>OAuth Clients</h1>
+{{ end }}
+
 
   <table>
+  <thead>
     <tr>
-      <td>Client ID</td>
-      <td>Name</td>
-      <td>Action</td>
-      <td>Scope</td>
-      <td>Resource IDs</td>
-      <td>Authorities</td>
-      <td>Authorized Grant Types</td>
-      <td>Last Modified</td>
+      <th>Client ID</th>
+      <th>Name</th>
+      <th>Action</th>
+      <th>Scope</th>
+      <th>Resource IDs</th>
+      <th>Authorities</th>
+      <th>Authorized Grant Types</th>
+      <th>Last Modified</th>
     </tr>
+  </thead>
+  <tbody>
     {{range .Clients}}
       <tr>
         <td>{{ .ID }}</td>
@@ -32,6 +33,5 @@
         <td>{{ .LastModified }}</td>
     </tr>
     {{else}}<tr><td colspan="7">No Clients Were Found</td></tr>{{end}}
+  </tbody>
   </table>
-</body>
-</html>

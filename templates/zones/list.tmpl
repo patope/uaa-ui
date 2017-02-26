@@ -1,20 +1,21 @@
-<!doctype html>
-
-<html lang="en">
-<head>
-  <meta charset="utf-8">
+{{ define "title-zones/list" }}
   <title>Identity Zones</title>
-</head>
+{{ end }}
 
-<body>
+{{ define "header-zones/list" }}
   <h1>Identity Zones</h1>
+{{ end }}
+
   <table>
+  <thead>
     <tr>
-      <td>ID</td>
-      <td>Name</td>
-      <td>Subdomain</td>
-      <td>Description</td>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Subdomain</th>
+      <th>Description</th>
     </tr>
+  </thead>
+  <tbody>
     {{range .}}
     <tr>
       <td>{{ .ID }}</td>
@@ -23,6 +24,5 @@
       <td>{{ .Description }}</td>
     </tr>
     {{else}}<tr><td colspan="4">No Zones Found</td></tr>{{end}}
+  </tbody>
   </table>
-</body>
-</html>

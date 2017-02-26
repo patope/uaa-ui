@@ -1,15 +1,11 @@
-<!doctype html>
-
-<html lang="en">
-<head>
-  <meta charset="utf-8">
+{{ define "title-users/user" }}
   <title>User {{ .GUID }}</title>
-</head>
+{{ end }}
 
-<body>
+{{ define "header-users/user" }}
   <h1>User {{ .Username }}</h1>
+{{ end }}
 
-  <h2>Groups</h2>
   <table>
     <tr>
       <td>Value</td>
@@ -18,10 +14,9 @@
     </tr>
     {{range .Groups}}
       <tr>
-        <td>{{ .Value }}</td>
+        <td><a href="/groups/{{ .Value }}">{{ .Value }}</a></td>
         <td>{{ .Display }}</td>
         <td>{{ .Type }}</td>
     </tr>
     {{else}}<tr><td colspan="7">No Groups Were Found</td></tr>{{end}}
-</body>
-</html>
+</table>
