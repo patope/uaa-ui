@@ -1,0 +1,30 @@
+{{ define "title-identity-providers/list" }}
+  <title>Identity providers</title>
+{{ end }}
+
+{{ define "header-identity-providers/list" }}
+  <h1>Identity providers</h1>
+{{ end }}
+
+  <table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Type</th>
+      <th>Active</th>
+      <th>IdentityZoneId</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{range .}}
+      <tr>
+        <td><a href="/identity-providers/{{ .GUID }}">{{ .GUID }}</a></td>
+        <td>{{ .Name }}</td>
+        <td>{{ .Type }}</td>
+        <td>{{ .Active }}</td>
+        <td>{{ .IdentityZoneId }}</td>
+    </tr>
+    {{else}}<tr><td colspan="7">No Identity Providers Were Found</td></tr>{{end}}
+    </tbody>
+  </table>

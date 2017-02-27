@@ -21,6 +21,8 @@ type Client interface {
 	User(id string) (User, error)
 	Group(id string) (Group, error)
 	ListGroups() (Groups, error)
+	ListIdentityProviders() ([]IdentityProvider, error)
+	IdentityProvider(id string) (IdentityProvider, error)
 }
 
 type uaaClient struct {
@@ -212,4 +214,37 @@ func (c *uaaClient) Group(id string) (group Group, err error) {
 	}
 
 	return group, nil
+}
+
+func (c *uaaClient) IdentityProvider(id string) (indentityProvider IdentityProvider, err error) {
+	req, err := c.newHTTPRequest("GET", "/identity-providers/"+id, nil)
+	if err != nil {
+		return indentityProvider, err
+	}
+
+	req.Header.Set("Accept", "application/json")
+
+	err = c.executeAndUnmarshall(req, &indentityProvider)
+	if err != nil {
+		return indentityProvider, err
+	}
+
+	return indentityProvider, nil
+}
+
+
+func (c *uaaClient) ListIdentityProviders() (indentityProviders []IdentityProvider, err error) {
+	req, err := c.newHTTPRequest("GET", "/identity-providers", nil)
+	if err != nil {
+		return indentityProviders, err
+	}
+
+	req.Header.Set("Accept", "application/json")
+
+	err = c.executeAndUnmarshall(req, &indentityProviders)
+	if err != nil {
+		return indentityProviders, err
+	}
+
+	return indentityProviders, nil
 }

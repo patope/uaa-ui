@@ -85,3 +85,24 @@ func groupHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc {
 		r.HTML(w, http.StatusOK, "groups/group", group)
 	}
 }
+
+func listIdentityProvidersHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		identityProviders, err := uaac.ListIdentityProviders()
+		if err != nil {
+			r.Text(w, http.StatusInternalServerError, err.Error())
+		}
+		r.HTML(w, http.StatusOK, "identity-providers/list", identityProviders)
+	}
+}
+
+func IdentityProviderHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		vars := mux.Vars(req)
+		identityProvider, err := uaac.IdentityProvider(vars["id"])
+		if err != nil {
+			r.Text(w, http.StatusInternalServerError, err.Error())
+		}
+		r.HTML(w, http.StatusOK, "identity-providers/identity-provider", identityProvider)
+	}
+}

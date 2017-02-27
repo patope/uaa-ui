@@ -30,6 +30,8 @@ func main() {
 	router.HandleFunc("/users", listUsersHandler(r, uaac)).Methods("GET")
 	router.HandleFunc("/groups", listGroupsHandler(r, uaac)).Methods("GET")
 	router.HandleFunc("/groups/{id}", groupHandler(r, uaac)).Methods("GET")
+	router.HandleFunc("/identity-providers", listIdentityProvidersHandler(r, uaac)).Methods("GET")
+	router.HandleFunc("/identity-providers/{id}", IdentityProviderHandler(r, uaac)).Methods("GET")
 
 	n.UseHandler(router)
 

@@ -1,5 +1,9 @@
 package uaa
 
+import (
+	"encoding/json"
+)
+
 type ServerInfo struct {
 	App            map[string]string
 	Links          map[string]string
@@ -128,4 +132,18 @@ type Group struct {
 		Type   string `json:"type"`
 		Value  string `json:"value"`
 	} `json:"members"`
+}
+
+
+type IdentityProvider struct {
+	GUID string `json:"id"`
+	OriginKey string `json:"originKey"`
+	Name string `json:"name"`
+	Type string `json:"type"`
+	Config json.RawMessage `json:"config"`
+	Version int `json:"version"`
+	Created int64 `json:"created"`
+	Active bool `json:"active"`
+	IdentityZoneId string `json:"identityZoneId"`
+	LastModified int64 `json:"last_modified"`
 }
