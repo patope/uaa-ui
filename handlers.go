@@ -106,3 +106,24 @@ func IdentityProviderHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc
 		r.HTML(w, http.StatusOK, "identity-providers/identity-provider", identityProvider)
 	}
 }
+
+func listSamlServiceProvidersHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		samlServiceProviders, err := uaac.ListSamlServiceProviders()
+		if err != nil {
+			r.Text(w, http.StatusInternalServerError, err.Error())
+		}
+		r.HTML(w, http.StatusOK, "saml/service-providers/list", samlServiceProviders)
+	}
+}
+
+func SamlServiceProviderHandler(r *render.Render, uaac uaa.Client) http.HandlerFunc {
+	return func(w http.ResponseWriter, req *http.Request) {
+		vars := mux.Vars(req)
+		samlServiceProvider, err := uaac.SamlServiceProvider(vars["id"])
+		if err != nil {
+			r.Text(w, http.StatusInternalServerError, err.Error())
+		}
+		r.HTML(w, http.StatusOK, "saml/service-providers/service-provider", samlServiceProvider)
+	}
+}

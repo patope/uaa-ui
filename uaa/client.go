@@ -22,6 +22,8 @@ type Client interface {
 	Group(id string) (Group, error)
 	ListGroups() (Groups, error)
 	ListIdentityProviders() ([]IdentityProvider, error)
+	ListSamlServiceProviders() ([]SamlServiceProvider, error)
+	SamlServiceProvider(id string) (SamlServiceProvider, error)
 	IdentityProvider(id string) (IdentityProvider, error)
 }
 
@@ -232,7 +234,6 @@ func (c *uaaClient) IdentityProvider(id string) (indentityProvider IdentityProvi
 	return indentityProvider, nil
 }
 
-
 func (c *uaaClient) ListIdentityProviders() (indentityProviders []IdentityProvider, err error) {
 	req, err := c.newHTTPRequest("GET", "/identity-providers", nil)
 	if err != nil {
@@ -247,4 +248,36 @@ func (c *uaaClient) ListIdentityProviders() (indentityProviders []IdentityProvid
 	}
 
 	return indentityProviders, nil
+}
+
+func (c *uaaClient) ListSamlServiceProviders() (samlServiceProviders []SamlServiceProvider, err error) {
+	req, err := c.newHTTPRequest("GET", "/saml/service-providers", nil)
+	if err != nil {
+		return samlServiceProviders, err
+	}
+
+	req.Header.Set("Accept", "application/json")
+
+	err = c.executeAndUnmarshall(req, &samlServiceProviders)
+	if err != nil {
+		return samlServiceProviders, err
+	}
+
+	return samlServiceProviders, nil
+}
+
+func (c *uaaClient) SamlServiceProvider(id string) (samlServiceProvider SamlServiceProvider, err error) {
+	req, err := c.newHTTPRequest("GET", "/saml/service-providers/"+id, nil)
+	if err != nil {
+		return samlServiceProvider, err
+	}
+
+	req.Header.Set("Accept", "application/json")
+
+	err = c.executeAndUnmarshall(req, &samlServiceProvider)
+	if err != nil {
+		return samlServiceProvider, err
+	}
+
+	return samlServiceProvider, nil
 }

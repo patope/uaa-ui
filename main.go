@@ -32,6 +32,8 @@ func main() {
 	router.HandleFunc("/groups/{id}", groupHandler(r, uaac)).Methods("GET")
 	router.HandleFunc("/identity-providers", listIdentityProvidersHandler(r, uaac)).Methods("GET")
 	router.HandleFunc("/identity-providers/{id}", IdentityProviderHandler(r, uaac)).Methods("GET")
+	router.HandleFunc("/saml/service-providers", listSamlServiceProvidersHandler(r, uaac)).Methods("GET")
+	router.HandleFunc("/saml/service-providers/{id}", SamlServiceProviderHandler(r, uaac)).Methods("GET")
 
 	n.UseHandler(router)
 

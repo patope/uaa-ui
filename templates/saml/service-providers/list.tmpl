@@ -1,0 +1,26 @@
+{{ define "title-saml/service-providers/list" }}
+  <title>SAML Service Providers</title>
+{{ end }}
+
+{{ define "header-saml/service-providers/list" }}
+  <h1>SAML Service Providers</h1>
+{{ end }}
+
+  <table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>EntityID</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{range .}}
+      <tr>
+        <td><a href="/groups/{{ .GUID }}">{{ .GUID }}</a></td>
+        <td>{{ .Name }}</td>
+        <td>{{ .EntityID }}</td>
+    </tr>
+    {{else}}<tr><td colspan="7">No SAML Service Providers Were Found</td></tr>{{end}}
+    <tbody>
+  </table>

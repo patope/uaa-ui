@@ -134,16 +134,33 @@ type Group struct {
 	} `json:"members"`
 }
 
-
 type IdentityProvider struct {
-	GUID string `json:"id"`
-	OriginKey string `json:"originKey"`
-	Name string `json:"name"`
-	Type string `json:"type"`
-	Config json.RawMessage `json:"config"`
-	Version int `json:"version"`
-	Created int64 `json:"created"`
-	Active bool `json:"active"`
-	IdentityZoneId string `json:"identityZoneId"`
-	LastModified int64 `json:"last_modified"`
+	GUID           string          `json:"id"`
+	OriginKey      string          `json:"originKey"`
+	Name           string          `json:"name"`
+	Type           string          `json:"type"`
+	Config         json.RawMessage `json:"config"`
+	Version        int             `json:"version"`
+	Created        int64           `json:"created"`
+	Active         bool            `json:"active"`
+	IdentityZoneID string          `json:"identityZoneId"`
+	LastModified   int64           `json:"last_modified"`
+}
+
+type SamlServiceProvider struct {
+	GUID     string `json:"id"`
+	EntityID string `json:"entityId"`
+	Name     string `json:"name"`
+	Config   struct {
+		MetaDataLocation         string `json:"metaDataLocation"`
+		NameID                   string `json:"nameID"`
+		SingleSignOnServiceIndex int32  `json:"singleSignOnServiceIndex"`
+		MetadataTrustCheck       bool   `json:"metadataTrustCheck"`
+		SkipSslValidation        bool   `json:"skipSslValidation"`
+	} `json:"config"`
+	Version        int32 `json:"version"`
+	Created        int64 `json:"created"`
+	LastModified   int64 `json:"lastModified"`
+	Active         int64 `json:"active"`
+	IdentityZoneID int64 `json:"identityZoneId"`
 }
