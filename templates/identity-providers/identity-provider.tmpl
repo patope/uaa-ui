@@ -6,4 +6,165 @@
   <h1>Identity provider {{ .GUID }}</h1>
 {{ end }}
 
+<table>
+<tbody>
+<tr>
+  <td>Name</td>
+  <td>{{ .Name }}</td>
+</tr>
+<tr>
+  <td>Active</td>
+  <td>{{ .Active }}</td>
+</tr>
+<tr>
+  <td>OriginKey</td>
+  <td>{{ .OriginKey }}</td>
+</tr>
+{{ with .UaaIdentityProviderConfig }}
+  <tr>
+    <td>disabled</td>
+    <td>{{ .DisableInternalUserManagement }}</td>
+  </tr>
+  <tr>
+    <td>EmailDomain</td>
+    <td>{{ .EmailDomain }}</td>
+  </tr>
+  <tr>
+    <td>ProviderDescription</td>
+    <td>{{ .ProviderDescription }}</td>
+  </tr>
+  <tr>
+    <td>PasswordPolicy.MinLength</td>
+    <td>{{ .PasswordPolicy.MinLength }}</td>
+  </tr>
+  <tr>
+    <td>PasswordPolicy.MaxLength</td>
+    <td>{{ .PasswordPolicy.MaxLength }}</td>
+  </tr>
+  <tr>
+    <td>PasswordPolicy.RequireUpperCaseCharacter</td>
+    <td>{{ .PasswordPolicy.RequireUpperCaseCharacter }}</td>
+  </tr>
+  <tr>
+    <td>PasswordPolicy.RequireLowerCaseCharacter</td>
+    <td>{{ .PasswordPolicy.RequireLowerCaseCharacter }}</td>
+  </tr>
+  <tr>
+    <td>PasswordPolicy.RequireDigit</td>
+    <td>{{ .PasswordPolicy.RequireDigit }}</td>
+  </tr>
+  <tr>
+    <td>PasswordPolicy.RequireSpecialCharacter</td>
+    <td>{{ .PasswordPolicy.RequireSpecialCharacter }}</td>
+  </tr>
+  <tr>
+    <td>PasswordPolicy.ExpirePasswordInMonths</td>
+    <td>{{ .PasswordPolicy.ExpirePasswordInMonths }}</td>
+  </tr>
+  <tr>
+    <td>PasswordPolicy.PasswordNewerThan</td>
+    <td>{{ .PasswordPolicy.PasswordNewerThan }}</td>
+  </tr>
+  <tr>
+    <td>LockoutPolicy.LockoutPeriodSeconds</td>
+    <td>{{ .LockoutPolicy.LockoutPeriodSeconds }}</td>
+  </tr>
+  <tr>
+    <td>LockoutPolicy.LockoutAfterFailures</td>
+    <td>{{ .LockoutPolicy.LockoutAfterFailures }}</td>
+  </tr>
+  <tr>
+    <td>LockoutPolicy.CountFailuresWithin</td>
+    <td>{{ .LockoutPolicy.CountFailuresWithin }}</td>
+  </tr>
+  <tr>
+    <td>DisableInternalUserManagement</td>
+    <td>{{ .DisableInternalUserManagement }}</td>
+  </tr>
+{{ end }}
+
+
+
+
+
+
+{{ with .SamlIdentityProviderConfig }}
+  <tr>
+    <td>EmailDomain</td>
+    <td>{{ .EmailDomain }}</td>
+  </tr>
+  <tr>
+    <td>AdditionalConfiguration</td>
+    <td>{{ .AdditionalConfiguration }}</td>
+  </tr>
+  <tr>
+    <td>ProviderDescription</td>
+    <td>{{ .ProviderDescription }}</td>
+  </tr>
+  <tr>
+    <td>ExternalGroupsWhitelist</td>
+    <td>{{ .ExternalGroupsWhitelist }}</td>
+  </tr>
+  <tr>
+    <td>AttributeMappings</td>
+    <td>{{ .AttributeMappings }}</td>
+  </tr>
+  <tr>
+    <td>AddShadowUserOnLogin</td>
+    <td>{{ .AddShadowUserOnLogin }}</td>
+  </tr>
+  <tr>
+    <td>StoreCustomAttributes</td>
+    <td>{{ .StoreCustomAttributes }}</td>
+  </tr>
+  <tr>
+    <td>MetaDataLocation</td>
+    <td>{{ .MetaDataLocation }}</td>
+  </tr>
+  <tr>
+    <td>IdpEntityAlias</td>
+    <td>{{ .IdpEntityAlias }}</td>
+  </tr>
+  <tr>
+    <td>ZoneID</td>
+    <td>{{ .ZoneID }}</td>
+  </tr>
+  <tr>
+    <td>NameID</td>
+    <td>{{ .NameID }}</td>
+  </tr>
+  <tr>
+    <td>AssertionConsumerIndex</td>
+    <td>{{ .AssertionConsumerIndex }}</td>
+  </tr>
+  <tr>
+    <td>MetadataTrustCheck</td>
+    <td>{{ .MetadataTrustCheck }}</td>
+  </tr>
+  <tr>
+    <td>ShowSamlLink</td>
+    <td>{{ .ShowSamlLink }}</td>
+  </tr>
+  <tr>
+    <td>LinkText</td>
+    <td>{{ .LinkText }}</td>
+  </tr>
+  <tr>
+    <td>IconURL</td>
+    <td>{{ .IconURL }}</td>
+  </tr>
+  <tr>
+    <td>GroupMappingMode</td>
+    <td>{{ .GroupMappingMode }}</td>
+  </tr>
+  <tr>
+    <td>SkipSslValidation</td>
+    <td>{{ .SkipSslValidation }}</td>
+  </tr>
+{{ end }}
+
+
+</tbody>
+</table>
+
 <div></div>

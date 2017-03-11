@@ -218,20 +218,50 @@ func (c *uaaClient) Group(id string) (group Group, err error) {
 	return group, nil
 }
 
+func resolveUnmarshalErr(data []byte, err error) string {
+	if e, ok := err.(*json.UnmarshalTypeError); ok {
+		// grab stuff ahead of the error
+		var i int
+		for i = int(e.Offset) - 1; i != -1 && data[i] != '\n' && data[i] != ','; i-- {
+		}
+		info := strings.TrimSpace(string(data[i+1 : int(e.Offset)]))
+		s := fmt.Sprintf("%s - at: %s", e.Error(), info)
+		return s
+	}
+	if e, ok := err.(*json.UnmarshalFieldError); ok {
+		return e.Error()
+	}
+	if e, ok := err.(*json.InvalidUnmarshalError); ok {
+		return e.Error()
+	}
+	return err.Error()
+}
+
 func (c *uaaClient) IdentityProvider(id string) (indentityProvider IdentityProvider, err error) {
-	req, err := c.newHTTPRequest("GET", "/identity-providers/"+id, nil)
+	req, err := c.newHTTPRequest("GET", "/identity-providers/"+id+"?rawConfig=true", nil)
 	if err != nil {
-		return indentityProvider, err
+		return
 	}
-
 	req.Header.Set("Accept", "application/json")
-
 	err = c.executeAndUnmarshall(req, &indentityProvider)
+
 	if err != nil {
-		return indentityProvider, err
+		return
 	}
 
-	return indentityProvider, nil
+	if err != nil {
+		return
+	}
+	switch indentityProvider.Type {
+	case "saml":
+		err = json.Unmarshal(indentityProvider.Config, &indentityProvider.SamlIdentityProviderConfig)
+	case "uaa":
+		err = json.Unmarshal(indentityProvider.Config, &indentityProvider.UaaIdentityProviderConfig)
+		if err != nil {
+			fmt.Println(resolveUnmarshalErr(indentityProvider.Config, err))
+		}
+	}
+	return
 }
 
 func (c *uaaClient) ListIdentityProviders() (indentityProviders []IdentityProvider, err error) {
@@ -269,15 +299,19 @@ func (c *uaaClient) ListSamlServiceProviders() (samlServiceProviders []SamlServi
 func (c *uaaClient) SamlServiceProvider(id string) (samlServiceProvider SamlServiceProvider, err error) {
 	req, err := c.newHTTPRequest("GET", "/saml/service-providers/"+id, nil)
 	if err != nil {
-		return samlServiceProvider, err
+		return
 	}
-
 	req.Header.Set("Accept", "application/json")
 
 	err = c.executeAndUnmarshall(req, &samlServiceProvider)
 	if err != nil {
-		return samlServiceProvider, err
+		return
 	}
+	samlServiceProvider.Config = new(SamlServiceProviderConfig)
+	if err = json.Unmarshal([]byte(*samlServiceProvider.RawConfig), samlServiceProvider.Config); err != nil {
+		return
+	}
+	samlServiceProvider.RawConfig = nil
 
 	return samlServiceProvider, nil
 }

@@ -1,0 +1,71 @@
+{{ define "title-saml/service-providers/service-provider" }}
+  <title>SAML Service Provider</title>
+{{ end }}
+
+{{ define "header-saml/service-providers/service-provider" }}
+  <h1>SAML Service Provider {{ .GUID }}</h1>
+{{ end }}
+
+  <table>
+  <thead>
+    <tr>
+      <th>Attribute</th>
+      <th>Value</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>ID</td>
+        <td>{{ .GUID }}</td>
+      </tr>
+      <tr>
+        <td>EntityID</td>
+        <td>{{ .EntityID }}</td>
+      </tr>
+      <tr>
+        <td>Name</td>
+        <td>{{ .Name }}</td>
+      </tr>
+      <tr>
+        <td>Config.MetaDataLocation</td>
+        <td>{{ .Config.MetaDataLocation }}</td>
+      </tr>
+      <tr>
+        <td>Config.NameID</td>
+        <td>{{ .Config.NameID }}</td>
+      </tr>
+      <tr>
+        <td>Config.SingleSignOnServiceIndex</td>
+        <td>{{ .Config.SingleSignOnServiceIndex }}</td>
+      </tr>
+      <tr>
+        <td>Config.MetadataTrustCheck</td>
+        <td>{{ .Config.MetadataTrustCheck }}</td>
+      </tr>
+      <tr>
+        <td>Config.SkipSslValidation</td>
+        <td>{{ .Config.SkipSslValidation }}</td>
+      </tr>
+            <tr>
+        <td>Version</td>
+        <td>{{ .Version }}</td>
+      </tr>
+      <tr>
+        <td>Created</td>
+        <td>{{ .Created }}</td>
+      </tr>
+      <tr>
+        <td>LastModified</td>
+        <td>{{ .LastModified }}</td>
+      </tr>
+      <tr>
+        <td>Active</td>
+        <td>{{ .Active }}</td>
+      </tr>
+      <tr>
+        <td>IdentityZoneID</td>
+        <td>{{ .IdentityZoneID }}</td>
+      </tr>
+    <tbody>
+  </table>
+

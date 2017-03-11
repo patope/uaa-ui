@@ -7,14 +7,17 @@
 {{ end }}
 </head>
 
+{{ define "links" }}
+<ul>{{ range $key, $url := . }}<li><a href="{{$url}}">{{$key}}</a>{{end}}</ul>
+{{ end }}
   {{ if . }}
   <ul>
       <li>Version: {{ .Version }}</li>
-      <li>Links: {{ .Links }}</li>
+      <li>Links: {{ template "links" .Links }}</li>
       <li>Zone Name: {{ .ZoneName }}</li>
       <li>Entity ID: {{ .EntityID }}</li>
       <li>Commit ID: <a href="https://github.com/cloudfoundry/uaa/commit/{{ .CommitID }}">{{ .CommitID }}</a></li>
-      <li>IDP Definitions: {{ .IDPDefinitions }}</li>
+      <li>IDP Definitions: {{ template "links" .IDPDefinitions }}</li>
       <li>Timestamp: {{ .Timestamp }}</li>
   </ul>
   {{else}}Unable To retrieve Server Info{{end}}
